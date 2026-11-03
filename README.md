@@ -9,36 +9,36 @@ you look at the market and decide for yourself.
 > wrong or delayed. Backtests are not promises: past results do not predict future returns. You are responsible for
 > every trade you take.
 
-## Install karna kitna aasaan hai? (Easy install, Hinglish)
+## Quick start (no coding needed)
 
-**Claude ya koi AI nahi chahiye.** Na Claude Pro, na koi paid account. Yeh ek normal free software hai jo aapke PC par chalta hai.
+**You do not need Claude or any AI subscription.** No paid account of any kind. This is ordinary free software that runs on your own computer.
 
-**Kya chahiye:**
-- Windows ya Mac (ya Linux) wala koi bhi PC/laptop, aur internet
-- **Python** (free): [python.org/downloads](https://www.python.org/downloads/) se download kijiye
-  - Windows par install karte waqt neeche **"Add python.exe to PATH"** zaroor tick kijiye
-- Lagbhag **1 GB** khaali jagah, aur pehli baar **10–20 minute**
+**What you need**
+- Any Windows, Mac or Linux computer with an internet connection
+- **Python** (free) from [python.org/downloads](https://www.python.org/downloads/)
+  - On Windows, tick **"Add python.exe to PATH"** at the bottom of the installer
+- About **1 GB** of free disk space, and **10-20 minutes** for the first setup
 
-**Windows par:**
-1. Is page par upar hare **Code** button par click kijiye, phir **Download ZIP**
-2. ZIP file par right-click, phir **Extract All**
-3. Folder ke andar **`install.bat`** par double-click kijiye. Pehli baar 10–20 minute lagenge, window band mat kijiye
-4. Ho jaane ke baad **`run.bat`** par double-click kijiye. Browser mein dashboard khul jayega: **http://localhost:8810**
+**Windows**
+1. Click the green **Code** button at the top of this page, then **Download ZIP**
+2. Right-click the ZIP file and choose **Extract All**
+3. Open the extracted folder and double-click **`install.bat`**. The first run takes 10-20 minutes; keep the window open
+4. When it finishes, double-click **`run.bat`**. The dashboard opens in your browser at **http://localhost:8810**
 
-**Mac par:**
-1. **Code** button, phir **Download ZIP**, phir ZIP par double-click karke kholiye
-2. **Terminal** kholiye (Cmd+Space dabaiye, "Terminal" likhiye) aur yeh chalaiye:
+**Mac**
+1. Click **Code**, then **Download ZIP**, then double-click the ZIP to unpack it
+2. Open **Terminal** (press Cmd+Space, type "Terminal") and run:
    ```bash
    cd ~/Downloads/market-lab-main
    bash install.sh
    ```
-3. Ho jaane ke baad, har baar chalane ke liye:
+3. After that, start it any time with:
    ```bash
    cd ~/Downloads/market-lab-main && bash run.sh
    ```
 
-Bas itna hi. Jab tak window ya Terminal khula hai, dashboard chalta rahega. Data apne aap update hota hai.
-Latest data aur naya backtest chahiye to `install.bat` (Windows) ya `bash install.sh` (Mac) dobara chala dijiye.
+The dashboard keeps running while the window (or Terminal) stays open, and prices update on their own.
+To refresh the history and re-run the backtest, run `install.bat` (Windows) or `bash install.sh` (Mac) again.
 
 ## What's inside
 - **Smart Money:** every F&O stock's move since the open, the waterfall of strongest and weakest stocks, sector chips,
@@ -80,16 +80,6 @@ Refresh the data and backtest any time with `.venv/bin/python -m lab.setup` (Win
 ## Data sources
 NSE's public website (index members, quotes, company filings), Yahoo Finance (price history), Google News RSS
 (headlines) and Wikipedia (company summaries), each fetched politely from your own computer for your own use. Check each source's terms before using the data for anything else.
-
----
-
-## हिंदी में
-यह एक मुफ़्त, open-source NSE डैशबोर्ड है जो **आपके अपने कंप्यूटर** पर चलता है। डेटा public sources से आता है और सारा हिसाब आपके कंप्यूटर पर होता है। यह **निवेश सलाह नहीं** है: patterns और backtests
-नियमों से बनते हैं, गलत भी हो सकते हैं, और हर trade की ज़िम्मेदारी आपकी है।
-
-**Install:** Python 3.10+ install कीजिए। Mac/Linux पर `./install.sh` चलाइए, Windows पर ZIP download करके
-`install.bat` पर double-click कीजिए (पहली बार 10-20 मिनट)। फिर `run.sh` / `run.bat` चलाइए और
-**http://localhost:8810** खोलिए।
 
 ## License
 MIT. See [LICENSE](LICENSE).
