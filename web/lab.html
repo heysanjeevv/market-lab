@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swing Lab</title>
+<style>
+:root{--bg:#edf0f3;--card:#fff;--ink:#141a26;--muted:#6b7385;--line:#d9dee6;--up:#22a05a;--upbg:#e8f6ee;--down:#dc3f54;--downbg:#fdecef;--blue:#2563eb}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:13px Inter,system-ui,sans-serif}
+*{box-sizing:border-box}
+.up{color:var(--up)}.down{color:var(--down)}.muted{color:var(--muted)}.mono{font-family:"JetBrains Mono",monospace}
+main{padding:10px 22px 26px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+h1{font:700 30px "Barlow Condensed",sans-serif;letter-spacing:.5px;margin:0;line-height:1}h1 span{color:var(--up)}
+.sub{color:var(--muted);margin-top:4px;max-width:780px}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 11px;font-size:11.5px;transition:transform .2s,border-color .2s}
+.badge b{font-family:"JetBrains Mono",monospace}.badge:hover{transform:translateY(-2px);border-color:var(--up)}
+.verdict{margin-top:12px;background:#e8f6ee;border:1px solid #b7e0c6;border-left:5px solid var(--up);border-radius:8px;padding:10px 14px;line-height:1.5;animation:up .5s ease both}
+.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:12px;margin-top:12px;align-items:start}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;animation:up .55s ease both;transition:box-shadow .25s;min-width:0}
+.card:hover{box-shadow:0 10px 26px -14px rgba(20,26,38,.35)}
+.card h3{margin:0 0 2px;font:700 17px "Barlow Condensed",sans-serif;letter-spacing:.4px}
+.h{font-size:10.5px;color:var(--muted);letter-spacing:.7px;font-weight:700;text-transform:uppercase}
+.hrow{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec{font:700 21px "Barlow Condensed",sans-serif;letter-spacing:.6px;margin:20px 0 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sec small{font:500 12px Inter;color:var(--muted);letter-spacing:0}
+table.cmp{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.cmp td,.cmp th{padding:4px 6px;text-align:right;border-bottom:1px solid #eef1f5;font-family:"JetBrains Mono",monospace;white-space:nowrap}
+.cmp th{font:700 10px Inter;color:var(--muted);letter-spacing:.4px}.cmp td:first-child,.cmp th:first-child{text-align:left;font-family:Inter;font-weight:600}
+.cmp tbody tr:first-child td{background:#f0f8f3}
+.lg{display:inline-flex;align-items:center;gap:4px;font-size:11px;margin-right:12px;color:var(--muted)}.lg i{width:14px;height:3px;border-radius:2px;display:inline-block}.lg i.c{height:10px;width:12px;background:#f1f2f6;border:1px dashed #c3c9d4}
+#swc{position:relative;height:250px;margin-top:6px}#swcv{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
+#swtip{position:absolute;pointer-events:none;background:#141a26;color:#fff;font:600 11px "JetBrains Mono",monospace;padding:4px 7px;border-radius:5px;display:none;white-space:nowrap;z-index:2}
+.why{margin-top:6px;background:#f6f7fa;border-radius:7px;padding:7px 9px;font-size:11.5px;line-height:1.45;color:#3d4556}
+.mk{display:flex;align-items:center;gap:8px;border-radius:8px;padding:8px 10px;font-size:12px;margin-top:6px}
+.mk.on{background:#e8f6ee;color:#17603a}.mk.off{background:#fdecef;color:#9b1c2e}
+.mk .d{width:9px;height:9px;border-radius:50%;background:currentColor;animation:p2 1.6s infinite;flex:none}@keyframes p2{50%{opacity:.3}}
+ol.rules{margin:6px 0 0;padding-left:18px;line-height:1.55;font-size:12px}
+.list{max-height:330px;overflow:auto;margin-top:6px}
+.row{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:6px 7px;border-radius:7px;cursor:pointer;transition:background .15s,transform .15s;border-bottom:1px solid #f1f3f6}
+.row:hover{background:#eef3fb;transform:translateX(2px)}
+.row .s{font-weight:700;font-size:12.5px;min-width:0}.row .r{text-align:right;font:600 11px "JetBrains Mono",monospace;white-space:nowrap}
+.row .m{grid-column:1/-1;font:500 10.5px "JetBrains Mono",monospace;color:var(--muted)}
+.row.live{animation:pl 1.6s infinite}@keyframes pl{50%{background:#e3ecfd}}
+.pill{display:inline-block;font:700 9px Inter;letter-spacing:.4px;border-radius:9px;padding:1px 6px;margin-left:4px;vertical-align:middle}
+.pill.b{background:#e6edfd;color:var(--blue)}.pill.g{background:var(--upbg);color:#17603a}.pill.r{background:var(--downbg);color:#9b1c2e}.pill.n{background:#f1f3f6;color:var(--muted)}
+.dist{height:4px;border-radius:2px;background:#eef1f5;margin-top:3px;overflow:hidden;grid-column:1/-1}.dist i{display:block;height:100%;background:var(--blue);border-radius:2px;transition:width .8s}
+.empty{color:var(--muted);font-size:11.5px;padding:10px 4px;line-height:1.5}
+.prof{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:12px;align-items:start}
+.pb{display:grid;grid-template-columns:minmax(0,1fr) 50px;gap:2px 6px;align-items:center;font-size:11px;margin-top:6px}
+.pb .k{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pb .v{text-align:right;font:600 11px "JetBrains Mono",monospace}
+.pb .bar{grid-column:1/-1;height:5px;background:#eef1f5;border-radius:3px;overflow:hidden;margin:0}.pb .bar i{display:block;height:100%;border-radius:3px;transform-origin:left;animation:gx .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes gx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.pb .n{grid-column:1/-1;font-size:9.5px;color:var(--muted);margin-top:-1px}
+table.lb{width:100%;border-collapse:collapse;font-size:11.5px}
+.lb th{font-size:10px;color:var(--muted);text-align:right;padding:5px 6px;border-bottom:1px solid var(--line);white-space:nowrap;letter-spacing:.3px}
+.lb th:first-child,.lb td:first-child,.lb th:nth-child(2),.lb td:nth-child(2){text-align:left}
+.lb td{padding:6px;text-align:right;border-bottom:1px solid #eef1f5;font-family:"JetBrains Mono",monospace;white-space:nowrap}
+.lb td:first-child{font-family:Inter;font-weight:700}.lb td:nth-child(2){font-family:Inter}
+.lb tbody tr{transition:background .15s}.lb tbody tr:hover{background:#f0f5fd;cursor:pointer}
+.lb .bar{display:inline-block;height:8px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.yb{display:inline-flex;gap:2px;vertical-align:middle}.yb i{width:8px;height:12px;border-radius:2px;display:block}
+.find{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:10px}
+.f{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;position:relative;overflow:hidden;animation:up .6s ease both;transition:transform .25s,box-shadow .25s}
+.f:hover{transform:translateY(-3px);box-shadow:0 12px 24px -16px rgba(20,26,38,.45)}
+.f:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--up)}
+.f b{display:block;font-size:12px;margin-bottom:3px;padding-right:22px}.f p{margin:0;color:#3d4556;font-size:11.5px;line-height:1.45}
+.f .n{position:absolute;right:10px;top:6px;font:700 22px "Barlow Condensed";color:#e3e8f0}
+.note{color:var(--muted);font-size:11px;margin-top:10px;line-height:1.5}
+.flash{animation:fl 1s}@keyframes fl{0%{background:#fff3b0}100%{background:transparent}}
+.tw{overflow-x:auto}
+@media (max-width:1200px){.prof{grid-template-columns:repeat(3,minmax(0,1fr))}.find{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1000px){.grid,.g3{grid-template-columns:1fr}.prof{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div><h1>SWING <span>LAB</span></h1>
+      <div class="sub">Holds of 2–40 days in delivery, tested on 5 years of NSE stocks after every cost. Click any stock on this page: its chart opens on the daily view with every past trade, the setup right now and its risk:reward.</div></div>
+    <div class="badges" id="badges"></div>
+  </div>
+  <div class="verdict" id="verdict">Loading…</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="h">The system · after delivery costs (<span id="swcost"></span>% a round trip)</div>
+      <h3 id="swname">–</h3>
+      <div class="tw"><table class="cmp" id="swcmp"></table></div>
+      <div style="margin-top:9px"><span class="lg"><i style="background:#2563eb"></i>Swing system</span><span class="lg"><i style="background:#9aa3b2"></i>Equal-weight universe</span><span class="lg"><i style="background:#d97706"></i>Nifty 50</span><span class="lg"><i class="c"></i>In cash: Nifty under its 200-DMA</span></div>
+      <div id="swc"><canvas id="swcv"></canvas><div id="swtip"></div></div>
+      <div class="why" id="why"></div>
+    </div>
+    <div class="card">
+      <div class="h">Today</div>
+      <div id="swmk"></div>
+      <div class="h" style="margin-top:12px">The rules</div>
+      <ol class="rules" id="swrules"></ol>
+    </div>
+  </div>
+
+  <div class="sec">STOCKS IN RADAR <small id="radt"></small></div>
+  <div class="g3">
+    <div class="card"><div class="hrow"><div class="h">Setup ready · waiting for the trigger</div><span class="mono muted" id="nform"></span></div>
+      <div class="muted" style="font-size:11px;margin-top:2px">Uptrend, near the 52-week high, tight 10-day base. A close above the trigger on 1.3× volume is the entry.</div>
+      <div class="list" id="form"></div></div>
+    <div class="card"><div class="hrow"><div class="h">Triggered · open trades</div><span class="mono muted" id="ntrig"></span></div>
+      <div class="muted" style="font-size:11px;margin-top:2px">Fired at the last close (buy at the next open), trades running, and trades of the last two weeks.</div>
+      <div class="list" id="trig"></div></div>
+    <div class="card"><div class="hrow"><div class="h">Stocks where it worked best</div><span class="mono muted" id="nbest"></span></div>
+      <div class="muted" style="font-size:11px;margin-top:2px">The system's own trades since 2022, 4+ trades each, average net per trade. Few trades each: a watchlist, not a promise.</div>
+      <div class="list" id="best"></div></div>
+  </div>
+
+  <div class="sec">WHAT KIND OF STOCKS IT WORKS IN <small>average net per trade of the system's 2,300+ trades, by type</small></div>
+  <div class="prof" id="prof"></div>
+  <div class="note" id="profnote"></div>
+
+  <div class="sec">SWING LEADERBOARD <small>only the strategies that beat the universe, in and out of sample</small></div>
+  <div class="card tw" style="margin-top:10px">
+    <table class="lb" id="swlb"></table>
+    <div class="note" id="removed"></div>
+  </div>
+
+  <div class="find" id="swrob"></div>
+  <div class="note" id="foot"></div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]);
+const sg = v => v == null ? "–" : (v > 0 ? "+" : "") + v;
+const show = (sym, strat) => window.labShow && window.labShow(sym, strat || "candidate", "1d");
+let SWD = null, SWC = null, SWH = null, PREV = "";
+
+async function load() {
+  try { SWD = await (await fetch("/api/lab/swing")).json(); } catch (e) { $("verdict").textContent = "The lab is not answering."; return; }
+  if (SWD.error) { $("verdict").textContent = SWD.error; return; }
+  const c = SWD.candidate, m = c.metrics;
+  $("badges").innerHTML = [["Stocks", SWD.stocks], ["Trades simulated", (SWD.trades / 1e5).toFixed(1) + " lakh"], ["Strategies tested", 23], ["Working", Object.keys(SWD.strategies).length], ["Cost / round trip", SWD.cost_pct + "%"]]
+    .map(([k, v]) => `<span class="badge">${k} <b>${v}</b></span>`).join("");
+  $("verdict").innerHTML = `<b>Your backtest on your own data:</b> ${esc(c.label)} made ${m["CAGR%"]}% a year with a worst drawdown of ${m["maxDD%"]}%, against ${c.ew["CAGR%"]}% for the equal-weight universe and ${c.nifty["CAGR%"]}% for Nifty, after delivery costs. A backtest is not a promise: survivorship bias (today's Nifty 500 list is used for the past) flatters every long test, and live results will differ.`;
+  $("swcost").textContent = SWD.cost_pct; $("swname").textContent = c.label;
+  $("swrules").innerHTML = c.rules.map(r => `<li>${esc(r)}</li>`).join("");
+  const yrs = Object.keys(m["years%"]);
+  const row = (n, x) => `<tr><td>${n}</td><td>${x["CAGR%"]}%</td><td class="down">${x["maxDD%"]}%</td><td>${x.Sharpe}</td>${yrs.map(y => { const v = x["years%"][y]; return `<td class="${v >= 0 ? "up" : "down"}">${v == null ? "–" : sg(v) + "%"}</td>`; }).join("")}</tr>`;
+  $("swcmp").innerHTML = `<thead><tr><th></th><th>CAGR</th><th>Max DD</th><th>Sharpe</th>${yrs.map(y => `<th>${y}${y === "2022" ? "*" : y === "2026" ? " YTD" : ""}</th>`).join("")}</tr></thead><tbody>` + row("Swing system", m) + row("Equal-weight universe", c.ew) + row("Nifty 50", c.nifty) + "</tbody>";
+  const off = c.regime.filter(r => !r[1]).length;
+  $("why").innerHTML = `<b>Why the line goes flat:</b> those are cash periods, not missing data. When Nifty closes under its 200-day average the system stops buying and lets open trades finish, so the account sits in cash (grey bands: ${off} of ${c.regime.length} days, whenever Nifty was under its 200-day average). `
+    + `The ${c.skipped.n} VCP breakouts it skipped in those periods averaged only ${sg(c.skipped.avg)}% each after costs, while the filter cut the worst drawdown from −29% to ${m["maxDD%"]}%. *2022 = Nov–Dec only.`;
+  SWC = {lines: [c.curve, c.curve_ew, c.curve_nifty], regime: c.regime, t0: performance.now()};
+  profile(); board(); robust(); radar();
+  $("foot").textContent = `Research built ${SWD.built.replace("T", " ")} · Yahoo daily bars (5 years), NSE's Nifty 500 and F&O lists · entry at the next day's open, stop checked before target, gaps through the stop fill at the open · ₹10 lakh, 10 slots of 10% · a research tool, not investment advice.`;
+}
+
+function radar() {
+  const L = SWD.live;
+  if (!L) { $("swmk").innerHTML = '<div class="empty">Scanning the universe…</div>'; return; }
+  $("swmk").innerHTML = `<div class="mk ${L.mkt_up ? "on" : "off"}"><span class="d"></span><span><b>Market filter ${L.mkt_up ? "ON: new buys allowed" : "OFF: no new buys"}</b><br>Nifty ${L.nifty.toLocaleString("en-IN")} vs 200-DMA ${L.nifty_200.toLocaleString("en-IN")} (${sg(+((L.nifty / L.nifty_200 - 1) * 100).toFixed(1))}%)</span></div>`;
+  $("radt").textContent = "· scanned " + new Date(L.time * 1000).toLocaleString("en-IN", {timeZone: "Asia/Kolkata", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"}) + " IST · refreshed after every close";
+  const filt = L.mkt_up ? "" : '<span class="pill r">FILTER OFF</span>';
+  const maxd = Math.max(5, ...L.forming.map(x => x.dist_pct));
+  $("nform").textContent = L.forming.length;
+  $("form").innerHTML = L.forming.map(x => `<div class="row" data-s="${esc(x.sym)}"><span class="s">${esc(x.sym)} <span class="pill b">READY</span>${filt}</span><span class="r">buy &gt; ₹${x.trigger}</span>
+    <span class="m">now ₹${x.close} · ${x.dist_pct}% to trigger · SL ₹${x.stop} · T ₹${x.target} · risk ${x.risk_pct}% · 1:3 · RS ${sg(x.rs63)}</span><div class="dist"><i style="width:${Math.max(4, 100 - x.dist_pct / maxd * 100)}%"></i></div></div>`).join("")
+    || '<div class="empty">No stock is in a ready VCP base right now. In a weak market (Nifty under its 200-DMA) very few stocks hold near their highs.</div>';
+  const tm = t => new Date(t * 1000).toLocaleDateString("en-IN", {timeZone: "Asia/Kolkata", day: "2-digit", month: "short"});
+  const trig = L.signals.map(x => `<div class="row live" data-s="${esc(x.sym)}"><span class="s">${esc(x.sym)} <span class="pill b">TRIGGERED</span>${filt}</span><span class="r">buy ~₹${x.p_in}</span>
+      <span class="m">at the next open · SL ₹${x.stop} · T ₹${x.target} · RS ${sg(x.rs63)}</span></div>`)
+    .concat(L.open.map(x => `<div class="row" data-s="${esc(x.sym)}"><span class="s">${esc(x.sym)} <span class="pill g">OPEN</span></span><span class="r ${x.p_out >= x.p_in ? "up" : "down"}">${sg(+((x.p_out / x.p_in - 1) * 100).toFixed(1))}%</span>
+      <span class="m">since ${tm(x.t_in)} · in ₹${x.p_in} · now ₹${x.p_out} · SL ₹${x.stop} · T ₹${x.target}</span></div>`))
+    .concat((L.recent || []).map(x => `<div class="row" data-s="${esc(x.sym)}"><span class="s">${esc(x.sym)} <span class="pill n">CLOSED</span></span><span class="r ${x.pct >= 0 ? "up" : "down"}">${sg(x.pct)}%</span>
+      <span class="m">${tm(x.t_in)} → ${tm(x.t_out)} · ₹${x.p_in} → ₹${x.p_out} · ${sg(x.R)}R</span></div>`)).join("");
+  $("ntrig").textContent = `${L.signals.length} triggered · ${L.open.length} open`;
+  $("trig").innerHTML = trig || '<div class="empty">Nothing triggered or open. With the market filter off the system is in cash.</div>';
+  const B = SWD.best_stocks || [], mx = Math.max(...B.map(x => x.avg), 1);
+  $("nbest").textContent = B.length;
+  $("best").innerHTML = B.map(x => `<div class="row" data-s="${esc(x.sym)}"><span class="s">${esc(x.sym)} <span class="muted" style="font-weight:500;font-size:10.5px">${esc(x.sector)}</span></span><span class="r up">${sg(x.avg)}% / trade</span>
+    <span class="m">${x.n} trades · ${x.win}% won · total ${sg(x.tot)}%</span><div class="dist"><i style="width:${x.avg / mx * 100}%;background:var(--up)"></i></div></div>`).join("");
+  document.querySelectorAll("#form .row, #trig .row, #best .row").forEach(r => r.onclick = () => show(r.dataset.s));
+}
+
+function profile() {
+  const P = SWD.profile || {};
+  $("prof").innerHTML = Object.entries(P).map(([t, rows], j) => {
+    const mx = Math.max(...rows.map(r => Math.abs(r.avg)), 1);
+    return `<div class="card" style="animation-delay:${.05 * j}s"><div class="h">${esc(t)}</div>${rows.slice(0, 8).map((r, i) => `<div class="pb"><span class="k" title="${esc(r.k)}">${esc(r.k)}</span><span class="v ${r.avg >= 0 ? "up" : "down"}">${sg(r.avg)}%</span>
+      <div class="bar"><i style="width:${Math.abs(r.avg) / mx * 100}%;background:${i === 0 ? "var(--up)" : r.avg >= 0 ? "#7cc79c" : "var(--down)"};animation-delay:${.04 * i}s"></i></div><span class="n">${r.n} trades · ${r.win}% won</span></div>`).join("")}</div>`;
+  }).join("");
+  const top = k => (P[k] || [])[0];
+  const parts = ["Sector", "Company size", "Strength vs Nifty (3 months)", "Base width"].map(top).filter(Boolean).map(r => r.k);
+  $("profnote").innerHTML = `<b>Stock selection, in short:</b> it worked best in ${parts.map(esc).join(" · ")}. Mid caps beat large caps, leaders beating Nifty beat laggards, and wider bases (a deeper 10-day range, so a wider stop) paid more than very tight ones. The lowest-turnover stocks look best on paper, but real fills there are worse than this test assumes: prefer ₹10 crore+ traded a day.`;
+}
+
+function board() {
+  const c = SWD.candidate, rows = Object.entries(SWD.strategies).map(([k, v]) => ({k, ...v})).sort((a, b) => b.excess - a.excess);
+  const mx = Math.max(.3, ...rows.map(r => Math.abs(r.excess)), ...rows.map(r => Math.abs(r.OOS_exc)));
+  const bb = v => `<span class="bar" style="width:${Math.abs(v) / mx * 50}px;background:${v >= 0 ? "var(--up)" : "var(--down)"}"></span><span class="${v >= 0 ? "up" : "down"}">${sg(v)}%</span>`;
+  $("swlb").innerHTML = `<thead><tr><th>Strategy</th><th>Exit</th><th>Trades</th><th>Win %</th><th>Avg hold</th><th>Net / trade</th><th>Edge vs universe</th><th>Out-of-sample edge</th><th>Years</th></tr></thead><tbody>` +
+    rows.map(r => `<tr data-s="${esc(r.k)}"><td>${r.k === c.strat ? "★ " : ""}${esc(r.k)}</td><td>${esc(r.exit_name)}</td><td>${r.n.toLocaleString("en-IN")}</td><td>${r.win}</td><td>${r.days}d</td>
+      <td class="${r.net >= 0 ? "up" : "down"}">${sg(r.net)}%</td><td>${bb(r.excess)}</td><td>${bb(r.OOS_exc)}</td>
+      <td><span class="yb">${Object.entries(r.years).map(([y, v]) => `<i title="${y}: ${sg(v)}% a trade" style="background:${v >= 0 ? "var(--up)" : "var(--down)"};opacity:${.35 + Math.min(.65, Math.abs(v) / 4)}"></i>`).join("")}</span></td></tr>`).join("") + "</tbody>";
+  $("swlb").querySelectorAll("tbody tr").forEach(tr => tr.onclick = () => show("RELIANCE", tr.dataset.s));
+  $("removed").innerHTML = `★ = the system. "Edge vs universe" = the trade's return minus the equal-weight universe over the same days, which strips out the bull run and the survivorship bias. Out-of-sample = trades from July 2024 on. Click a row to see its trades on a chart.<br>
+    <b>Removed</b> (no edge over the universe, or it vanished out of sample): ${SWD.removed.map(esc).join(", ")}.`;
+}
+
+function robust() {
+  $("swrob").innerHTML = SWD.robust.map(([t, p], i) => `<div class="f" style="animation-delay:${.05 * i}s"><span class="n">${String(i + 1).padStart(2, "0")}</span><b>${esc(t)}</b><p>${esc(p)}</p></div>`).join("");
+}
+
+function draw() {
+  const cv = $("swcv"), w = $("swc"), dpr = devicePixelRatio || 1, W = w.clientWidth, H = w.clientHeight;
+  if (W && (cv.width !== W * dpr || cv.height !== H * dpr)) { cv.width = W * dpr; cv.height = H * dpr; }
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+  if (SWC && SWC.lines[0].length > 1) {
+    const Lp = 40, R = 8, T = 8, B = 20, all = SWC.lines.flat().map(p => p[1]), lo = Math.min(...all), hi = Math.max(...all);
+    const n = SWC.lines[0].length, X = i => Lp + (W - Lp - R) * i / (n - 1), Y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo || 1));
+    let s0 = null;                          // grey bands where the market filter kept the system in cash
+    SWC.regime.forEach((r, i) => {
+      if (!r[1] && s0 == null) s0 = i;
+      if ((r[1] || i === n - 1) && s0 != null) {
+        const e = r[1] ? i : n - 1, w0 = X(e) - X(s0);
+        x.fillStyle = "#f1f2f6"; x.fillRect(X(s0), T, w0, H - T - B);
+        if (w0 > 40) { x.fillStyle = "#a1a8b6"; x.font = "600 9.5px Inter"; x.fillText("CASH", X(s0) + 4, T + 11); }
+        s0 = null;
+      }
+    });
+    x.font = "10px JetBrains Mono"; x.lineWidth = 1;
+    for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4, y = Y(v); x.strokeStyle = "rgba(200,206,216,.5)"; x.beginPath(); x.moveTo(Lp, y); x.lineTo(W - R, y); x.stroke(); x.fillStyle = "#8a93a6"; x.fillText(v.toFixed(0), 4, y + 3); }
+    let ly = ""; SWC.lines[0].forEach((p, i) => { const y = p[0].slice(0, 4); if (y !== ly && i) { x.fillStyle = "#8a93a6"; x.fillText(y, X(i) - 12, H - 5); } ly = y; });
+    const k = Math.max(2, Math.floor(n * Math.min(1, (performance.now() - SWC.t0) / 1500)));
+    [[SWC.lines[2], "#d97706", 1.3], [SWC.lines[1], "#9aa3b2", 1.3], [SWC.lines[0], "#2563eb", 2.2]].forEach(([c, col, lw]) => {
+      x.beginPath(); for (let i = 0; i < Math.min(k, c.length); i++) i ? x.lineTo(X(i), Y(c[i][1])) : x.moveTo(X(i), Y(c[i][1])); x.strokeStyle = col; x.lineWidth = lw; x.stroke(); });
+    const j = Math.min(k, n) - 1, e = SWC.lines[0][j]; x.fillStyle = "#2563eb"; x.beginPath(); x.arc(X(j), Y(e[1]), 3.5, 0, 7); x.fill();
+    if (SWH != null && SWH < k) { x.strokeStyle = "#141a26"; x.lineWidth = 1; x.beginPath(); x.moveTo(X(SWH), T); x.lineTo(X(SWH), H - B); x.stroke(); }
+    draw.g = [Lp, R, W, n];
+  }
+  requestAnimationFrame(draw);
+}
+$("swcv").onmousemove = e => {
+  if (!SWC || !draw.g) return;
+  const [Lp, R, W, n] = draw.g, r = $("swcv").getBoundingClientRect(), mx = e.clientX - r.left, i = Math.max(0, Math.min(n - 1, Math.round((mx - Lp) / (W - Lp - R) * (n - 1))));
+  SWH = i; const t = $("swtip"), v = j => SWC.lines[j][Math.min(i, SWC.lines[j].length - 1)][1], cash = SWC.regime[i] && !SWC.regime[i][1];
+  t.style.display = "block"; t.innerHTML = `${SWC.lines[0][i][0]} · system ${v(0).toFixed(0)} · universe ${v(1).toFixed(0)} · Nifty ${v(2).toFixed(0)}${cash ? " · filter off" : ""}`;
+  t.style.left = Math.max(0, Math.min(r.width - t.offsetWidth - 4, mx + 10)) + "px"; t.style.top = "4px";
+};
+$("swcv").onmouseleave = () => { SWH = null; $("swtip").style.display = "none"; };
+requestAnimationFrame(draw);
+load();
+setInterval(async () => {
+  try { const s = await (await fetch("/api/lab/swing")).json(); if (!SWD || !s.live) return;
+    const key = JSON.stringify(s.live); if (key !== PREV) { const first = !PREV; PREV = key; SWD.live = s.live; radar();
+      if (!first) document.querySelectorAll(".list").forEach(l => { l.classList.add("flash"); setTimeout(() => l.classList.remove("flash"), 1000); }); } } catch (e) {}
+}, 30000);
+</script>
+</body>
+</html>

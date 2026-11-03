@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+html,body{margin:0;background:#edf0f3}
+.section{display:block}
+.divider{height:1px;background:#d9dee6;margin:8px 22px 6px}
+#disc{position:sticky;top:0;z-index:50;background:#fff7e0;border-bottom:1px solid #f1d58a;color:#6b4e00;font:12px Inter,system-ui,sans-serif;padding:7px 22px;text-align:center}
+#boot{font:13px Inter,system-ui,sans-serif;color:#6b7487;padding:40px;text-align:center}
+</style>
+</head>
+<body>
+<!-- Each part keeps its own styles and code inside its own shadow root, so the two never clash
+     and more parts can be added below the same way. -->
+<div id="disc"><b>Educational software · not investment advice.</b> Everything on this page is computed on your own computer from public data. Patterns and backtests are not recommendations. You are responsible for your own trades.</div>
+<div id="boot">Loading the dashboard…</div>
+<div class="section" id="smart-host"></div>
+<div class="divider"></div>
+<div class="section" id="sector-host"></div>
+<div class="divider"></div>
+<div class="section" id="lab-host"></div>
+<script>
+async function mount(hostId, url) {
+  const html = await (await fetch(url, {cache: "no-store"})).text();
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const host = document.getElementById(hostId), root = host.attachShadow({mode: "open"});
+  // the part's page styles were written for a whole page: :root and body become the part itself
+  const css = [...doc.querySelectorAll("style")].map(s => s.textContent).join("\n")
+    .replace(/:root/g, ":host").replace(/html,body\{/g, ":host{display:block;");
+  const code = [...doc.querySelectorAll("script:not([src])")].map(s => s.textContent);
+  doc.querySelectorAll("script").forEach(s => s.remove());
+  root.innerHTML = `<style>${css}</style>` + doc.body.innerHTML;
+  // its code looks things up in its own part only
+  const scoped = new Proxy(document, {get(t, p) {
+    if (p === "getElementById") return id => root.getElementById(id);
+    if (p === "querySelector") return s => root.querySelector(s);
+    if (p === "querySelectorAll") return s => root.querySelectorAll(s);
+    const v = t[p]; return typeof v === "function" ? v.bind(t) : v;
+  }});
+  code.forEach(c => new Function("document", c)(scoped));
+}
+(async () => {
+  await mount("smart-host", "/smart.html");
+  document.getElementById("boot").remove();
+  await mount("sector-host", "/sector.html");
+  await mount("lab-host", "/lab.html");
+})();
+</script>
+</body>
+</html>
