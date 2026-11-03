@@ -208,7 +208,16 @@ def summary():
     try:
         s = json.loads(OUT.read_text())
     except Exception:
-        s = {"error": "run: python -c 'from lab import swing_live as W; W.build_summary()'"}
+        s = {"error": "run: python -m lab.setup"}
+    # on a fresh install the backtest runs before the company classification exists: redo the stock profile once it does
+    prof = s.get("profile") or {}
+    if prof and all(r.get("k") in ("Other", "Unknown") for r in (prof.get("Sector", []) + prof.get("Company size", []))) \
+            and (M.DATA / "classification.json").exists():
+        try:
+            s["profile"], s["best_stocks"] = stock_profile(pd.read_pickle(B.ROOT.parent / "swing_trades.pkl"))
+            OUT.write_text(json.dumps({k: v for k, v in s.items() if k not in ("live", "list", "exits")}, default=float))
+        except Exception:
+            pass
     s["live"] = STATE["live"]
     s["list"] = list(S.STRATS)
     s["exits"] = EXIT_NAMES
