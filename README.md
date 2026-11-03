@@ -9,6 +9,37 @@ you look at the market and decide for yourself.
 > wrong or delayed. Backtests are not promises: past results do not predict future returns. You are responsible for
 > every trade you take.
 
+## Install karna kitna aasaan hai? (Easy install, Hinglish)
+
+**Claude ya koi AI nahi chahiye.** Na Claude Pro, na koi paid account. Yeh ek normal free software hai jo aapke PC par chalta hai.
+
+**Kya chahiye:**
+- Windows ya Mac (ya Linux) wala koi bhi PC/laptop, aur internet
+- **Python** (free): [python.org/downloads](https://www.python.org/downloads/) se download kijiye
+  - Windows par install karte waqt neeche **"Add python.exe to PATH"** zaroor tick kijiye
+- Lagbhag **1 GB** khaali jagah, aur pehli baar **10–20 minute**
+
+**Windows par:**
+1. Is page par upar hare **Code** button par click kijiye, phir **Download ZIP**
+2. ZIP file par right-click, phir **Extract All**
+3. Folder ke andar **`install.bat`** par double-click kijiye. Pehli baar 10–20 minute lagenge, window band mat kijiye
+4. Ho jaane ke baad **`run.bat`** par double-click kijiye. Browser mein dashboard khul jayega: **http://localhost:8810**
+
+**Mac par:**
+1. **Code** button, phir **Download ZIP**, phir ZIP par double-click karke kholiye
+2. **Terminal** kholiye (Cmd+Space dabaiye, "Terminal" likhiye) aur yeh chalaiye:
+   ```bash
+   cd ~/Downloads/market-lab-main
+   bash install.sh
+   ```
+3. Ho jaane ke baad, har baar chalane ke liye:
+   ```bash
+   cd ~/Downloads/market-lab-main && bash run.sh
+   ```
+
+Bas itna hi. Jab tak window ya Terminal khula hai, dashboard chalta rahega. Data apne aap update hota hai.
+Latest data aur naya backtest chahiye to `install.bat` (Windows) ya `bash install.sh` (Mac) dobara chala dijiye.
+
 ## What's inside
 - **Smart Money:** every F&O stock's move since the open, the waterfall of strongest and weakest stocks, sector chips,
   live tiles, and smart-money structure (break of structure, order blocks, fair-value gaps, liquidity sweeps).
@@ -27,9 +58,9 @@ You need **Python 3.10 or newer** ([python.org/downloads](https://www.python.org
 
 **Mac / Linux**
 ```bash
-git clone https://github.com/heysanjeevv/market-lab.git
+git clone https://github.com/heysanjeevv/market-lab.git   # or: Code > Download ZIP
 cd market-lab
-./install.sh
+bash install.sh
 ```
 
 **Windows:** download the repository as ZIP (green *Code* button, *Download ZIP*), unzip it, and double-click
@@ -40,7 +71,7 @@ tzdata), downloads about 5 years of daily prices for ~520 NSE stocks and indices
 backtest. It takes 10-20 minutes the first time.
 
 ## Run
-- Mac / Linux: `./run.sh`
+- Mac / Linux: `bash run.sh`
 - Windows: double-click `run.bat`
 
 Then open **http://localhost:8810** (it opens by itself). Keep the window running while you use it.
