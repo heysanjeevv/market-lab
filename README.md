@@ -9,6 +9,17 @@ you look at the market and decide for yourself.
 > wrong or delayed. Backtests are not promises: past results do not predict future returns. You are responsible for
 > every trade you take.
 
+![Smart Money: every F&O stock's move since the open, the strongest and weakest stocks, sectors and live tiles](docs/smart-money.jpg)
+
+<table><tr>
+<td width="50%"><img src="docs/swing-chart.png" alt="Daily chart with the swing rules' past signals, stop and target boxes, and the current setup"><br><sub><b>Charts:</b> past signals of the swing rules with stop/target boxes, and where today's setup stands</sub></td>
+<td width="50%"><img src="docs/research-note.png" alt="Plain-language company note: business, results, valuation"><br><sub><b>Research note:</b> what the company does in plain words, quarterly results and valuation from NSE filings</sub></td>
+</tr></table>
+
+![Sector Map: which sectors are beating Nifty today](docs/sector-map.jpg)
+
+⭐ **If this helps you, please star the repo.** It helps other traders find it.
+
 ## Quick start (no coding needed)
 
 **You do not need Claude or any AI subscription.** No paid account of any kind. This is ordinary free software that runs on your own computer.
